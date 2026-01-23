@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from discord import app_commands
 import os
 import sqlite3
 from dotenv import load_dotenv
@@ -129,12 +130,12 @@ async def find_message(guild, mid):
     for ch in guild.text_channels:
         try:
             return await ch.fetch_message(mid)
-        except discord.NotFound:
+        except (discord.NotFound, discord.Forbidden):
             pass
         for t in ch.threads:
             try:
                 return await t.fetch_message(mid)
-            except discord.NotFound:
+            except (discord.NotFound, discord.Forbidden):
                 pass
     return None
 
@@ -176,7 +177,7 @@ async def update_starboard(msg, guild, emoji):
     if existing:
         try:
             sb_msg = await starboard.fetch_message(existing)
-        except discord.NotFound:
+        except (discord.NotFound, discord.Forbidden):
             pass
 
     count = await reaction_count(msg, sb_msg, emoji)
@@ -233,7 +234,7 @@ async def on_raw_reaction_add(payload):
 
     try:
         msg = await channel.fetch_message(payload.message_id)
-    except discord.NotFound:
+    except (discord.NotFound, discord.Forbidden):
         return
 
     starboard = discord.utils.get(guild.channels, name=STARBOARD_CHANNEL_NAME)
@@ -258,7 +259,7 @@ async def on_raw_reaction_remove(payload):
 
     try:
         msg = await channel.fetch_message(payload.message_id)
-    except discord.NotFound:
+    except (discord.NotFound, discord.Forbidden):
         return
 
     starboard = discord.utils.get(guild.channels, name=STARBOARD_CHANNEL_NAME)
