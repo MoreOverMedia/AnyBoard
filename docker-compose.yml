@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  boardbot:
+    build: .
+    container_name: boardbot
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - ./starboard.db:/app/starboard.db
+    networks:
+      - boardbot-network
+
+networks:
+  boardbot-network:
+    driver: bridge

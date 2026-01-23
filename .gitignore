@@ -1,0 +1,15 @@
+# Secrets
+.env
+
+# Python
+__pycache__/
+*.pyc
+
+# Databases
+*.db
+
+# Docker volumes
+data/
+
+# OS junk
+.DS_Store
