@@ -13,3 +13,6 @@ data/
 
 # OS junk
 .DS_Store
+
+# Rust
+/target
